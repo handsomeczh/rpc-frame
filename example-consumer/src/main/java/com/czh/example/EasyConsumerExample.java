@@ -1,6 +1,7 @@
 package com.czh.example;
 
 import com.czh.example.model.User;
+import com.czh.example.proxy.ServiceProxyFactory;
 import com.czh.example.proxy.UserServiceProxy;
 import com.czh.example.service.UserService;
 
@@ -11,8 +12,14 @@ import com.czh.example.service.UserService;
  */
 public class EasyConsumerExample {
     public static void main(String[] args) {
-//      todo 需要获取 UserService 的实现类对象
-        UserServiceProxy userService = new UserServiceProxy();
+//       需要获取 UserService 的实现类对象
+
+//        todo 静态代理，无法实例化异常未解决
+//        UserServiceProxy userService = new UserServiceProxy();
+
+//        动态代理
+        UserService userService = ServiceProxyFactory.getProxy(UserService.class);
+
 //      通过RPC框架，快速得到一个支持远程调用服务提供者的代理对象，如同调用本地方法
 //        UserService userService = null;
         User user = new User();

@@ -34,6 +34,7 @@ public class UserServiceProxy implements UserService {
                 .build();
 
         try {
+//            序列化（Java对象=> 字节数组）
             byte[] bodyBytes = serializer.serialize(rpcRequest);
             byte[] result;
             try (HttpResponse httpResponse = HttpRequest.post("http://localhost:8080")
@@ -49,3 +50,16 @@ public class UserServiceProxy implements UserService {
         return null;
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+

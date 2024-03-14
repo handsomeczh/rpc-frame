@@ -1,4 +1,4 @@
-package com.czh.example.impl;
+package com.czh.example.server.impl;
 
 /**
  * @author czh
