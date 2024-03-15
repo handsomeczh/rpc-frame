@@ -7,29 +7,23 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>example-provider</artifactId>
+    <artifactId>rpc-core</artifactId>
     <packaging>jar</packaging>
 
-    <name>example-provider</name>
+    <name>rpc-core</name>
     <url>http://maven.apache.org</url>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <logback-classic.version>1.4.11</logback-classic.version>
     </properties>
 
     <dependencies>
         <dependency>
-            <groupId>com.czh</groupId>
-            <artifactId>example-common</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>${logback-classic.version}</version>
         </dependency>
-
-        <dependency>
-            <groupId>com.czh</groupId>
-            <artifactId>rpc-core</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
-
 
         <dependency>
             <groupId>junit</groupId>
