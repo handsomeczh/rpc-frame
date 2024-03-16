@@ -35,7 +35,7 @@ public class ConfigUtil {
         if (StrUtil.isNotBlank(environment)){
             configFileBuilder.append("-").append(environment);
         }
-        configFileBuilder.append(".yaml");
+        configFileBuilder.append(".properties");
 //        todo 支持yaml和yml配置文件
 //        todo 提供消费者读取配置文件中文乱码（properties编码问题）
         Props props = new Props(configFileBuilder.toString(), "ISO-8859-1");
