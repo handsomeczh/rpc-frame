@@ -7,6 +7,7 @@ package com.czh.example.config;
  */
 
 import lombok.Data;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
  * RPC 框架配置
@@ -17,7 +18,7 @@ public class RpcConfig {
     /**
      * 名称
      */
-    private String name = "czh";
+    private String name = "陈泽瀚";
 
     /**
      * 版本号

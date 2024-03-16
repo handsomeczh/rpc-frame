@@ -17,6 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 public class RpcApplication {
 
     /**
+     * volatile
      * 1. 线程的可见性：当一个线程修改一个共享变量时，另外一个线程能读到这个修改的值。
      * <p>
      * 2. 顺序一致性：禁止指令重排序。
