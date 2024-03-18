@@ -6,10 +6,12 @@ package com.czh.example.server.impl;
  * 2024/3/14 11:47
  */
 
+import com.czh.example.application.RpcApplication;
 import com.czh.example.model.RpcRequest;
 import com.czh.example.model.RpcResponse;
 import com.czh.example.registry.LocalRegistry;
 import com.czh.example.serializer.Serializer;
+import com.czh.example.serializer.SerializerFactory;
 import com.czh.example.serializer.impl.JdkSerializer;
 import io.vertx.core.Handler;
 import io.vertx.core.buffer.Buffer;
@@ -23,6 +25,9 @@ import java.lang.reflect.Method;
  * HTTP 请求处理
  */
 public class HttpServerHandler implements Handler<HttpServerRequest> {
+
+    final Serializer serializer = SerializerFactory.getInstance(RpcApplication.getRpcConfig().getSerializer());
+
     //    反序列化请求为对象，并从请求对象中获取参数。
 //    根据服务名称从本地注册器中获取到对应的服务实现类。
 //    通过反射机制调用方法，得到返回结果。
@@ -30,7 +35,8 @@ public class HttpServerHandler implements Handler<HttpServerRequest> {
     @Override
     public void handle(HttpServerRequest request) {
 //        指定序列化器
-        final Serializer serializer = new JdkSerializer();
+//        final Serializer serializer = new JdkSerializer();
+//        使用工厂+读取配置
 
 //        记录日志
         System.out.println("Received request:" + request.method()+" "+request.uri());
@@ -53,7 +59,7 @@ public class HttpServerHandler implements Handler<HttpServerRequest> {
             }
 
             try {
-// 获取要调用的服务实现类，通过反射调用
+//              获取要调用的服务实现类，通过反射调用
                 Class<?> implClass = LocalRegistry.get(rpcRequest.getServiceName());
                 Method method = implClass.getMethod(rpcRequest.getMethodName(), rpcRequest.getParameterTypes());
                 Object result = method.invoke(implClass.getDeclaredConstructor().newInstance(), rpcRequest.getArgs());

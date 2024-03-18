@@ -1,0 +1,4 @@
+jdk=com.czh.example.serializer.impl.JdkSerializer
+hessian=com.czh.example.serializer.impl.HessianSerializer
+json=com.czh.example.serializer.impl.JsonSerializer
+kryo=com.czh.example.serializer.impl.KryoSerializer

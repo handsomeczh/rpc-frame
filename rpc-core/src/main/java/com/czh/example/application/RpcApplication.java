@@ -5,6 +5,8 @@ import com.czh.example.constant.RpcConstant;
 import com.czh.example.utils.ConfigUtil;
 import lombok.extern.slf4j.Slf4j;
 
+
+
 /**
  * RPC 框架应用
  * 相当于holder，存放了项目全局用到的变量。双检锁单例模式实现

@@ -6,8 +6,8 @@ package com.czh.example.config;
  * 2024/3/15 17:35
  */
 
+import com.czh.example.serializer.SerializerConstants;
 import lombok.Data;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
  * RPC 框架配置
@@ -39,4 +39,10 @@ public class RpcConfig {
      * 默认调用
      */
     private boolean mock = false;
+
+    /**
+     * 序列化器
+     * 目前仅支持JDK
+     */
+    private String serializer = SerializerConstants.KRYO;
 }
