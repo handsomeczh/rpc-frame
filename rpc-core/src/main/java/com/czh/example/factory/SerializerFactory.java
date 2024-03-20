@@ -1,6 +1,7 @@
-package com.czh.example.serializer;
+package com.czh.example.factory;
 
 
+import com.czh.example.serializer.Serializer;
 import com.czh.example.serializer.impl.JdkSerializer;
 import com.czh.example.spi.SpiLoader;
 

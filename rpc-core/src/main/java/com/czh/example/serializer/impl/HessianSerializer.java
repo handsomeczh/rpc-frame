@@ -20,7 +20,7 @@ public class HessianSerializer implements Serializer {
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         HessianOutput ho = new HessianOutput(bos);
         ho.writeObject(object);
-        ho.close();
+//        ho.close();
         return bos.toByteArray();
     }
 
@@ -28,9 +28,8 @@ public class HessianSerializer implements Serializer {
     public <T> T deserialize(byte[] bytes, Class<T> type) throws IOException {
         ByteArrayInputStream bis = new ByteArrayInputStream(bytes);
         HessianInput hi = new HessianInput(bis);
-        T result = (T) hi.readObject(type);
-        hi.close();
-        return result;
+//        hi.close();
+        return (T) hi.readObject(type);
 
     }
 }

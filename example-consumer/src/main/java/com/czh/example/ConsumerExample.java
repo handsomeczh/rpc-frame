@@ -1,6 +1,6 @@
 package com.czh.example;
 
-import com.czh.example.application.RpcApplication;
+
 import com.czh.example.config.RpcConfig;
 import com.czh.example.model.User;
 import com.czh.example.proxy.ServiceProxyFactory;

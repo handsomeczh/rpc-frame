@@ -14,4 +14,9 @@ public class RpcConstant {
      * 可以读取到类似的配置：rpc.name=czh rpc.version=1.0 rpc.XXX=XXX
      */
     public static final String DEFAULT_CONFIG_PREFIX = "rpc";
+
+    /**
+     * 默认服务版本号
+     */
+    public static final String DEFAULT_SEVICE_VERSION = "1.0";
 }

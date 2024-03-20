@@ -1,0 +1,1 @@
+etcd=com.czh.example.registry.EtcdRegistry

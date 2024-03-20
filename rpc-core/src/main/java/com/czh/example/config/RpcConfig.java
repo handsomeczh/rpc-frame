@@ -6,6 +6,7 @@ package com.czh.example.config;
  * 2024/3/15 17:35
  */
 
+import com.czh.example.registry.RegistryConfig;
 import com.czh.example.serializer.SerializerConstants;
 import lombok.Data;
 
@@ -44,5 +45,10 @@ public class RpcConfig {
      * 序列化器
      * 目前仅支持JDK
      */
-    private String serializer = SerializerConstants.KRYO;
+    private String serializer = SerializerConstants.JDK;
+
+    /**
+     * 注册中心配置
+     */
+    public RegistryConfig registryConfig = new RegistryConfig();
 }

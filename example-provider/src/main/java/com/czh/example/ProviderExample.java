@@ -2,16 +2,18 @@ package com.czh.example;
 
 import com.czh.example.application.RpcApplication;
 import com.czh.example.config.RpcConfig;
+import com.czh.example.factory.RegistryFactory;
+import com.czh.example.model.ServiceMetaInfo;
 import com.czh.example.registry.LocalRegistry;
+import com.czh.example.registry.Registry;
+import com.czh.example.registry.RegistryConfig;
 import com.czh.example.server.impl.VertxHttpService;
 import com.czh.example.service.UserService;
 import com.czh.example.service.impl.UserServiceImpl;
 
-import javax.sound.midi.Soundbank;
-import java.sql.SQLOutput;
 
 /**
- * 简易服务提供者示例
+ * 服务提供者示例
  *
  * @author czh
  * @version 1.0.0
@@ -23,7 +25,21 @@ public class ProviderExample {
         RpcApplication.init();
 
 //        注册服务
-        LocalRegistry.register(UserService.class.getName(), UserServiceImpl.class);
+        String serviceName = UserService.class.getName();
+        LocalRegistry.register(serviceName, UserServiceImpl.class);
+
+//        注册服务到注册中心
+//        RpcConfig rpcConfig = RpcApplication.getRpcConfig();
+//        RegistryConfig registryConfig = rpcConfig.getRegistryConfig();
+//        Registry registry = RegistryFactory.getInstance(registryConfig.getRegistry());
+//        ServiceMetaInfo serviceMetaInfo = new ServiceMetaInfo();
+//        serviceMetaInfo.setServiceName(serviceName);
+//        serviceMetaInfo.setServiceAddress(rpcConfig.getServerHost()+":"+rpcConfig.getServerPort());
+//        try {
+//            registry.register(serviceMetaInfo);
+//        }catch (Exception e){
+//            throw new RuntimeException(e);
+//        }
 
 //        启动web服务
         VertxHttpService httpService = new VertxHttpService();
