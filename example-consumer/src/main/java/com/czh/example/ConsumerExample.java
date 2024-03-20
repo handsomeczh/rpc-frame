@@ -17,14 +17,13 @@ import com.czh.example.utils.ConfigUtil;
 public class ConsumerExample {
     public static void main(String[] args) {
 //        加载配置文件
-        RpcConfig rpc = ConfigUtil.loadConfig(RpcConfig.class, "rpc");
-        System.out.println(rpc);
-//      todo userService为空 使用json序列化器报错 同kryo
+        ConfigUtil.loadConfig(RpcConfig.class, "rpc");
+//      todo userService为空
         UserService userService = ServiceProxyFactory.getProxy(UserService.class);
-        System.out.println(userService);
+//        System.out.println(userService);   为什么无法输出，会报错
         User user = new User();
         user.setName("czh");
-        //todo newUser为空 使用json序列化器报错
+        //todo 使用json序列化器报错
         User newUser = userService.getUser(user);
         if (newUser != null) {
             System.out.println(newUser.getName());

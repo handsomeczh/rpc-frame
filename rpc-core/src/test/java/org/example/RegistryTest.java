@@ -3,7 +3,7 @@ package org.example;
 import com.czh.example.model.ServiceMetaInfo;
 import com.czh.example.registry.EtcdRegistry;
 import com.czh.example.registry.Registry;
-import com.czh.example.registry.RegistryConfig;
+import com.czh.example.config.RegistryConfig;
 import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -53,7 +53,7 @@ public class RegistryTest {
     public void unRegister() {
         ServiceMetaInfo serviceMetaInfo = new ServiceMetaInfo();
         serviceMetaInfo.setServiceName("myService");
-        serviceMetaInfo.setServiceVersion("1.0");
+        serviceMetaInfo.setServiceVersion("2.0");
         serviceMetaInfo.setServiceHost("localhost");
         serviceMetaInfo.setServicePort(1234);
         registry.unRegister(serviceMetaInfo);
@@ -62,7 +62,7 @@ public class RegistryTest {
     @Test
     public void serviceDiscovery() {
         ServiceMetaInfo serviceMetaInfo = new ServiceMetaInfo();
-        serviceMetaInfo.setServiceName("myService");
+        serviceMetaInfo.setServiceName("com.czh.example.service.UserService");
         serviceMetaInfo.setServiceVersion("1.0");
         String serviceKey = serviceMetaInfo.getServiceKey();
         List<ServiceMetaInfo> serviceMetaInfoList = registry.serviceDiscovery(serviceKey);

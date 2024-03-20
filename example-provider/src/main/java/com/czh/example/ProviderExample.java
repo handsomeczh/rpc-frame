@@ -6,7 +6,7 @@ import com.czh.example.factory.RegistryFactory;
 import com.czh.example.model.ServiceMetaInfo;
 import com.czh.example.registry.LocalRegistry;
 import com.czh.example.registry.Registry;
-import com.czh.example.registry.RegistryConfig;
+import com.czh.example.config.RegistryConfig;
 import com.czh.example.server.impl.VertxHttpService;
 import com.czh.example.service.UserService;
 import com.czh.example.service.impl.UserServiceImpl;
@@ -29,17 +29,20 @@ public class ProviderExample {
         LocalRegistry.register(serviceName, UserServiceImpl.class);
 
 //        注册服务到注册中心
-//        RpcConfig rpcConfig = RpcApplication.getRpcConfig();
-//        RegistryConfig registryConfig = rpcConfig.getRegistryConfig();
-//        Registry registry = RegistryFactory.getInstance(registryConfig.getRegistry());
-//        ServiceMetaInfo serviceMetaInfo = new ServiceMetaInfo();
-//        serviceMetaInfo.setServiceName(serviceName);
-//        serviceMetaInfo.setServiceAddress(rpcConfig.getServerHost()+":"+rpcConfig.getServerPort());
-//        try {
-//            registry.register(serviceMetaInfo);
-//        }catch (Exception e){
-//            throw new RuntimeException(e);
-//        }
+//        todo 注册到服务中心没有 serviceHost:servicePort
+        RpcConfig rpcConfig = RpcApplication.getRpcConfig();
+        RegistryConfig registryConfig = rpcConfig.getRegistryConfig();
+        Registry registry = RegistryFactory.getInstance(registryConfig.getRegistry());
+        ServiceMetaInfo serviceMetaInfo = new ServiceMetaInfo();
+        serviceMetaInfo.setServiceName(serviceName);
+        serviceMetaInfo.setServiceHost(rpcConfig.getServerHost());
+        serviceMetaInfo.setServicePort(rpcConfig.getServerPort());
+        serviceMetaInfo.setServiceAddress(rpcConfig.getServerHost()+":"+rpcConfig.getServerPort());
+        try {
+            registry.register(serviceMetaInfo);
+        }catch (Exception e){
+            throw new RuntimeException(e);
+        }
 
 //        启动web服务
         VertxHttpService httpService = new VertxHttpService();

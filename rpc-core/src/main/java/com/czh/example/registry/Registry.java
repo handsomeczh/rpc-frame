@@ -1,5 +1,6 @@
 package com.czh.example.registry;
 
+import com.czh.example.config.RegistryConfig;
 import com.czh.example.model.ServiceMetaInfo;
 
 import java.util.List;

@@ -7,6 +7,8 @@ package com.czh.example.service;
  */
 
 import com.czh.example.model.User;
+import lombok.Data;
+
 
 /**
  * 用户服务

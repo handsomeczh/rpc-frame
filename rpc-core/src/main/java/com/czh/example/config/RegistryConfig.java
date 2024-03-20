@@ -1,4 +1,4 @@
-package com.czh.example.registry;
+package com.czh.example.config;
 
 import lombok.Data;
 

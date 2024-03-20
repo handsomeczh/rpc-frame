@@ -80,6 +80,9 @@ public class ServiceProxy implements InvocationHandler {
             try (HttpResponse httpResponse = HttpRequest.post(selectedServiceMetaInfo.getServiceAddress())
                     .body(bodyBytes)
                     .execute()) {
+//                try (HttpResponse httpResponse = HttpRequest.post("http://localhost:8080")
+//                        .body(bodyBytes)
+//                        .execute()) {
                 byte[] result = httpResponse.bodyBytes();
                 //            反序列化
                 RpcResponse rpcResponse = serializer.deserialize(result, RpcResponse.class);

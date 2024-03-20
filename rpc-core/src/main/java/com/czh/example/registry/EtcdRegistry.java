@@ -1,17 +1,15 @@
 package com.czh.example.registry;
 
 import cn.hutool.json.JSONUtil;
+import com.czh.example.config.RegistryConfig;
 import com.czh.example.model.ServiceMetaInfo;
 import io.etcd.jetcd.*;
-import io.etcd.jetcd.kv.GetResponse;
 import io.etcd.jetcd.options.GetOption;
 import io.etcd.jetcd.options.PutOption;
 
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
 /**
@@ -59,7 +57,7 @@ public class EtcdRegistry implements Registry {
         Lease leaseClient = client.getLeaseClient();
 
         //创建一个30秒的租约 grant:授予
-        long leaseId = leaseClient.grant(30).get().getID();
+        long leaseId = leaseClient.grant(600).get().getID();
 
         //设置要存储的键值对
         String registryKey = ETCD_ROOT_PATH + serviceMetaInfo.getServiceNodeKey();
@@ -80,7 +78,10 @@ public class EtcdRegistry implements Registry {
      */
     @Override
     public void unRegister(ServiceMetaInfo serviceMetaInfo) {
-        kvClient.delete(ByteSequence.from(ETCD_ROOT_PATH + serviceMetaInfo.getServiceNodeKey(), StandardCharsets.UTF_8));
+        String registerKey = ETCD_ROOT_PATH + serviceMetaInfo.getServiceNodeKey();
+        kvClient.delete(ByteSequence.from(registerKey, StandardCharsets.UTF_8));
+        // 也要从本地缓存移除
+//        localRegisterNodeKeySet.remove(registerKey);
     }
 
     /**

@@ -4,7 +4,7 @@ import com.czh.example.config.RpcConfig;
 import com.czh.example.constant.RpcConstant;
 import com.czh.example.factory.RegistryFactory;
 import com.czh.example.registry.Registry;
-import com.czh.example.registry.RegistryConfig;
+import com.czh.example.config.RegistryConfig;
 import com.czh.example.utils.ConfigUtil;
 import lombok.extern.slf4j.Slf4j;
 
