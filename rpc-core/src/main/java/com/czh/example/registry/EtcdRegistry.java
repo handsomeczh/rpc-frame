@@ -1,15 +1,21 @@
 package com.czh.example.registry;
 
+import cn.hutool.core.collection.CollUtil;
+import cn.hutool.cron.CronUtil;
+import cn.hutool.cron.task.Task;
 import cn.hutool.json.JSONUtil;
 import com.czh.example.config.RegistryConfig;
 import com.czh.example.model.ServiceMetaInfo;
+import com.sun.source.doctree.ThrowsTree;
 import io.etcd.jetcd.*;
 import io.etcd.jetcd.options.GetOption;
 import io.etcd.jetcd.options.PutOption;
 
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -18,6 +24,9 @@ import java.util.stream.Collectors;
  * 2024/3/20 9:52
  */
 public class EtcdRegistry implements Registry {
+
+    //本机注册的节点key集合（用于维护续期）
+    private final Set<String> localRegisterNodeKeySet = new HashSet<>();
 
     private Client client;
 
@@ -43,6 +52,7 @@ public class EtcdRegistry implements Registry {
                 .build();
 
         kvClient = client.getKVClient();
+        heartBeat();
     }
 
     /**
@@ -57,7 +67,7 @@ public class EtcdRegistry implements Registry {
         Lease leaseClient = client.getLeaseClient();
 
         //创建一个30秒的租约 grant:授予
-        long leaseId = leaseClient.grant(600).get().getID();
+        long leaseId = leaseClient.grant(30).get().getID();
 
         //设置要存储的键值对
         String registryKey = ETCD_ROOT_PATH + serviceMetaInfo.getServiceNodeKey();
@@ -69,6 +79,9 @@ public class EtcdRegistry implements Registry {
                 .withLeaseId(leaseId)
                 .build();
         kvClient.put(key, value, putOption).get();
+
+        //添加节点信息到本地缓存
+        localRegisterNodeKeySet.add(registryKey);
     }
 
     /**
@@ -81,7 +94,7 @@ public class EtcdRegistry implements Registry {
         String registerKey = ETCD_ROOT_PATH + serviceMetaInfo.getServiceNodeKey();
         kvClient.delete(ByteSequence.from(registerKey, StandardCharsets.UTF_8));
         // 也要从本地缓存移除
-//        localRegisterNodeKeySet.remove(registerKey);
+        localRegisterNodeKeySet.remove(registerKey);
     }
 
     /**
@@ -126,5 +139,41 @@ public class EtcdRegistry implements Registry {
         if (client != null) {
             client.close();
         }
+    }
+
+    /**
+     * 心跳检测（服务端）
+     */
+    @Override
+    public void heartBeat() {
+//        每10秒续签一次
+        CronUtil.schedule("*/10 * * * * *", new Task() {
+            @Override
+            public void execute() {
+                //遍历本节点所有的key
+                for (String key : localRegisterNodeKeySet) {
+                    try {
+                        List<KeyValue> keyValues = kvClient.get(ByteSequence.from(key, StandardCharsets.UTF_8))
+                                .get()
+                                .getKvs();
+                        //该节点已过期（需要重启节点才能重新注册）
+                        if(CollUtil.isEmpty(keyValues)){
+                            continue;
+                        }
+                        //节点未过期，重新注册（相当于续签）
+                        KeyValue keyValue = keyValues.get(0);
+                        String value = keyValue.getValue().toString(StandardCharsets.UTF_8);
+                        ServiceMetaInfo serviceMetaInfo = JSONUtil.toBean(value, ServiceMetaInfo.class);
+                        register(serviceMetaInfo);
+                    }catch (Exception e){
+                        throw new RuntimeException(key+"续签失败",e);
+                    }
+                }
+            }
+        });
+
+        //支持秒级别定时任务
+        CronUtil.setMatchSecond(true);
+        CronUtil.start();
     }
 }
