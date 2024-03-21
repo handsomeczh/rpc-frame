@@ -12,4 +12,7 @@ public class RegistryConstant {
     String ETCD = "etcd";
 
     String ZOOKEEPER = "zookeeper";
+
+    // todo 未实现redis注册中心
+    String REDIS = "redis";
 }

@@ -15,12 +15,14 @@ public class RegistryConfig {
     /**
      * 注册中心类别
      */
-    private String registry="etcd";
+    private String registry = "zookeeper";
 
     /**
      * 注册中心地址
+     * zookeeper:2181
+     * etcd:2379
      */
-    private String address  ="http://localhost:2379";
+    private String address = "http://localhost:2181";
 
     /**
      * 用户名

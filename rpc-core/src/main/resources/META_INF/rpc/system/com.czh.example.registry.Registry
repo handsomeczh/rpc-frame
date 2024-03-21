@@ -1,1 +1,2 @@
 etcd=com.czh.example.registry.EtcdRegistry
+zookeeper=com.czh.example.registry.ZookeeperRegistry

@@ -24,7 +24,10 @@ public class ConsumerExample {
         User user = new User();
         user.setName("czh");
         //todo 使用json序列化器报错
+        System.out.println("第一次调用");
         User newUser = userService.getUser(user);
+        System.out.println("第二次调用");
+        User newUser1 = userService.getUser(user);
         if (newUser != null) {
             System.out.println(newUser.getName());
         } else {
