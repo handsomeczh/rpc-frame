@@ -26,15 +26,14 @@ public class ConsumerExample {
         //todo 使用json序列化器报错
         System.out.println("第一次调用");
         User newUser = userService.getUser(user);
-        System.out.println("第二次调用");
-        User newUser1 = userService.getUser(user);
+//        System.out.println("第二次调用");
+//        User newUser1 = userService.getUser(user);
         if (newUser != null) {
             System.out.println(newUser.getName());
         } else {
             System.out.println("new == null");
         }
 //        todo 使用hessian报错，class java.lang.Integer cannot be cast to class java.lang.Short
-        short number = userService.getNumber();
-        System.out.println(number);
+        System.out.println(userService.getNumber());
     }
 }

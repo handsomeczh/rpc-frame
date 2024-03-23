@@ -119,7 +119,7 @@ public class EtcdRegistry implements Registry {
     public List<ServiceMetaInfo> serviceDiscovery(String serviceKey) {
         //优先从缓存获取服务
         List<ServiceMetaInfo> cacheServiceMetaInfoList = registryServiceCache.readCache();
-        if (cacheServiceMetaInfoList != null) {
+        if (cacheServiceMetaInfoList != null && cacheServiceMetaInfoList.size() != 0) {
             return cacheServiceMetaInfoList;
         }
 

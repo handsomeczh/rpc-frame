@@ -8,6 +8,7 @@ import com.czh.example.registry.LocalRegistry;
 import com.czh.example.registry.Registry;
 import com.czh.example.config.RegistryConfig;
 import com.czh.example.server.impl.VertxHttpService;
+import com.czh.example.server.tcp.VertxTcpServer;
 import com.czh.example.service.UserService;
 import com.czh.example.service.impl.UserServiceImpl;
 
@@ -44,8 +45,12 @@ public class ProviderExample {
             throw new RuntimeException(e);
         }
 
+//        启动TCP服务
+        VertxTcpServer vertxTcpServer = new VertxTcpServer();
+        vertxTcpServer.doStart(8080);
+
 //        启动web服务
-        VertxHttpService httpService = new VertxHttpService();
-        httpService.doStart(RpcApplication.getRpcConfig().getServerPort());
+//        VertxHttpService httpService = new VertxHttpService();
+//        httpService.doStart(RpcApplication.getRpcConfig().getServerPort());
     }
 }
