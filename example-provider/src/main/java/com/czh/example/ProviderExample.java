@@ -30,7 +30,6 @@ public class ProviderExample {
         LocalRegistry.register(serviceName, UserServiceImpl.class);
 
 //        注册服务到注册中心
-//        todo 注册到服务中心没有 serviceHost:servicePort
         RpcConfig rpcConfig = RpcApplication.getRpcConfig();
         RegistryConfig registryConfig = rpcConfig.getRegistryConfig();
         Registry registry = RegistryFactory.getInstance(registryConfig.getRegistry());
