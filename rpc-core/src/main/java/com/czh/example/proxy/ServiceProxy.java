@@ -5,6 +5,8 @@ import com.czh.example.application.RpcApplication;
 import com.czh.example.config.RpcConfig;
 import com.czh.example.constant.RpcConstant;
 import com.czh.example.factory.RegistryFactory;
+import com.czh.example.fault.retry.RetryStrategy;
+import com.czh.example.factory.RetryStrategyFactory;
 import com.czh.example.loadbalancer.LoadBalancer;
 import com.czh.example.loadbalancer.LoadbalancerFactory;
 import com.czh.example.model.RpcRequest;
@@ -24,6 +26,7 @@ import java.util.List;
  * @version 1.0.0
  * 2024/3/14 14:02
  */
+
 /**
  * JDK动态代理
  * invocation:调用
@@ -65,12 +68,16 @@ public class ServiceProxy implements InvocationHandler {
 //            将调用方法名（请求路径）作为负载均衡参数，调用相同方法总会请求到同一个服务器节点上
 //            todo 自定义一致性hash算法中的hash算法：根据客户端ip地址来计算hash值，保证同ip的请求发送给相同服务提供者
             HashMap<String, Object> requestParams = new HashMap<>();
-            requestParams.put("methodName",rpcRequest.getMethodName());
+            requestParams.put("methodName", rpcRequest.getMethodName());
             ServiceMetaInfo selectServiceMetaInfo = loadBalancer.select(requestParams, serviceMetaInfoList);
 
 
             //            发送TCP请求
-            RpcResponse rpcResponse = VertxTcpClient.doRequest(rpcRequest, selectServiceMetaInfo);
+//            重试策略
+            RetryStrategy retryStrategy = RetryStrategyFactory.getInstance(rpcConfig.getRetryStrategy());
+            RpcResponse rpcResponse = retryStrategy.doRetry(() ->
+                    VertxTcpClient.doRequest(rpcRequest, selectServiceMetaInfo)
+            );
             return rpcResponse.getData();
 
         } catch (Exception e) {

@@ -6,6 +6,8 @@ package com.czh.example.config;
  * 2024/3/15 17:35
  */
 
+import com.czh.example.fault.retry.RetryStrategy;
+import com.czh.example.fault.retry.RetryStrategyConstant;
 import com.czh.example.loadbalancer.LoadBalancer;
 import com.czh.example.loadbalancer.LoadBalancerConstant;
 import com.czh.example.serializer.SerializerConstants;
@@ -57,4 +59,9 @@ public class RpcConfig {
      * 负载均衡器
      */
     private String loadBalancer = LoadBalancerConstant.ROUND_ROBIN;
+
+    /**
+     * 重试策略
+     */
+    private String retryStrategy = RetryStrategyConstant.FIXED_INTERVAL;
 }

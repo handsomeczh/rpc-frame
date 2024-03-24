@@ -1,0 +1,2 @@
+no=com.czh.example.fault.retry.NoRetryStrategy
+fixedInterval=com.czh.example.fault.retry.FixedIntervalRetryStrategy

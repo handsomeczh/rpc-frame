@@ -7,7 +7,6 @@ import com.czh.example.model.ServiceMetaInfo;
 import com.czh.example.registry.LocalRegistry;
 import com.czh.example.registry.Registry;
 import com.czh.example.config.RegistryConfig;
-import com.czh.example.server.impl.VertxHttpService;
 import com.czh.example.server.tcp.VertxTcpServer;
 import com.czh.example.service.UserService;
 import com.czh.example.service.impl.UserServiceImpl;
