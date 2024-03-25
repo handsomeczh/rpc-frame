@@ -24,7 +24,7 @@ public class RpcConfig {
     /**
      * 名称
      */
-    private String name = "陈泽瀚";
+    private String name = "服务提供者";
 
     /**
      * 版本号

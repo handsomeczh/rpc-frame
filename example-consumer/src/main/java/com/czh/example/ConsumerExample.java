@@ -1,6 +1,7 @@
 package com.czh.example;
 
 
+import com.czh.example.bootstrap.ConsumerBootstrap;
 import com.czh.example.config.RpcConfig;
 import com.czh.example.model.User;
 import com.czh.example.proxy.ServiceProxyFactory;
@@ -17,7 +18,11 @@ import com.czh.example.utils.ConfigUtil;
 public class ConsumerExample {
     public static void main(String[] args) {
 //        加载配置文件
-        ConfigUtil.loadConfig(RpcConfig.class, "rpc");
+//        ConfigUtil.loadConfig(RpcConfig.class, "rpc");
+
+        //服务提供者初始化
+        ConsumerBootstrap.init();
+
 //      todo userService为空
         UserService userService = ServiceProxyFactory.getProxy(UserService.class);
 //        System.out.println(userService);   为什么无法输出，会报错
