@@ -1,0 +1,4 @@
+failBack=com.czh.example.fault.tolerant.FailBackTolerantStrategy
+failOver=com.czh.example.fault.tolerant.FailOverTolerantStrategy
+failSafe=com.czh.example.fault.tolerant.FailsafeTolerantStrategy
+failFast=com.czh.example.fault.tolerant.FailFastTolerantStrategy

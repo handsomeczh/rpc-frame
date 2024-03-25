@@ -8,6 +8,8 @@ package com.czh.example.config;
 
 import com.czh.example.fault.retry.RetryStrategy;
 import com.czh.example.fault.retry.RetryStrategyConstant;
+import com.czh.example.fault.tolerant.TolerantStrategy;
+import com.czh.example.fault.tolerant.TolerantStrategyConstant;
 import com.czh.example.loadbalancer.LoadBalancer;
 import com.czh.example.loadbalancer.LoadBalancerConstant;
 import com.czh.example.serializer.SerializerConstants;
@@ -64,4 +66,9 @@ public class RpcConfig {
      * 重试策略
      */
     private String retryStrategy = RetryStrategyConstant.FIXED_INTERVAL;
+
+    /**
+     * 容错策略
+     */
+    private String tolerantStrategy = TolerantStrategyConstant.FAIL_FAST;
 }
