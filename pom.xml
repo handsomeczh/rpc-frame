@@ -10,9 +10,9 @@
     <name>rpc-frame</name>
     <url>http://maven.apache.org</url>
     <modules>
-        <module>example-common</module>
-        <module>example-consumer</module>
-        <module>example-provider</module>
+        <module>rpc-common</module>
+        <module>rpc-consumer</module>
+        <module>rpc-provider</module>
         <module>rpc-easy</module>
         <module>rpc-core</module>
     </modules>
