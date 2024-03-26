@@ -2,7 +2,7 @@
 
 ​	RPC 的主要功能目标是让构建分布式计算（应用）更容易，在提供强大的远程调用能力时不损失本地调用的语义简洁性。为实现该目标，RPC 框架需提供一种透明调用机制，让使用者不必显式的区分本地调用和远程调用。
 
-   
+  [![image-20240326161307144.png](https://i.postimg.cc/rsgHjzt7/image-20240326161307144.png)](https://postimg.cc/ZvBjKbHL)
 
 ### 优点：
 
@@ -19,11 +19,11 @@
 
 ### 基本架构：
 
-![image-20240326162621405](C:\Users\Lenovo\AppData\Roaming\Typora\typora-user-images\image-20240326162621405.png)
+[![image-20240326162621405.png](https://i.postimg.cc/6Qmt275j/image-20240326162621405.png)](https://postimg.cc/DWLtRwGL)
 
 ### 调用流程：
 
-![image-20240326163656957](C:\Users\Lenovo\AppData\Roaming\Typora\typora-user-images\image-20240326163656957.png)
+[![image-20240326163656957.png](https://i.postimg.cc/pT5xD2m2/image-20240326163656957.png)](https://postimg.cc/Vrw3wP9T)
 
 ### 涉及到的技术：
 
