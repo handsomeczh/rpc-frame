@@ -16,7 +16,21 @@ public class RpcConstant {
     public static final String DEFAULT_CONFIG_PREFIX = "rpc";
 
     /**
+     * 配置文件后缀
+     */
+    public static final String PROPERTIES_CONFIG_SUFFIX = ".properties";
+
+    public static final String SETTING_CONFIG_SUFFIX = ".setting";
+
+    /**
      * 默认服务版本号
      */
     public static final String DEFAULT_SEVICE_VERSION = "1.0";
+
+    /**
+     * 配置文件环境参数
+     */
+    public static final String DEFAULT_TEST_ENVIRONMENT = "test";
+
+    public static final String DEFAULT_PROD_ENVIRONMENT = "prod";
 }

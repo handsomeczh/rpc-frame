@@ -2,11 +2,10 @@ package com.czh.example;
 
 
 import com.czh.example.bootstrap.ConsumerBootstrap;
-import com.czh.example.config.RpcConfig;
 import com.czh.example.model.User;
 import com.czh.example.proxy.ServiceProxyFactory;
 import com.czh.example.service.UserService;
-import com.czh.example.utils.ConfigUtil;
+
 
 /**
  * 简易服务消费者示例

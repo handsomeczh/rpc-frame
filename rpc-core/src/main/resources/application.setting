@@ -1,0 +1,5 @@
+[rpc]
+name=rpc-setting配置文件测试
+version=1.1.0
+serverPort=7777
+serverHost=localhost

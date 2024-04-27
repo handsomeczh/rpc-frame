@@ -13,12 +13,16 @@ import com.czh.example.fault.tolerant.TolerantStrategyConstant;
 import com.czh.example.loadbalancer.LoadBalancer;
 import com.czh.example.loadbalancer.LoadBalancerConstant;
 import com.czh.example.serializer.SerializerConstants;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * RPC 框架配置
  */
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class RpcConfig {
 
     /**
