@@ -8,20 +8,19 @@ package com.czh.example.utils;
 
 
 import cn.hutool.core.bean.BeanUtil;
-import cn.hutool.core.io.FileUtil;
-import cn.hutool.core.io.watch.SimpleWatcher;
-import cn.hutool.core.io.watch.WatchMonitor;
-import cn.hutool.core.io.watch.WatchServer;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.setting.Setting;
 import cn.hutool.setting.dialect.Props;
 import com.czh.example.config.RpcConfig;
 import com.czh.example.constant.RpcConstant;
 import lombok.extern.slf4j.Slf4j;
+import org.yaml.snakeyaml.Yaml;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.*;
+import java.util.Map;
+
+import static com.czh.example.constant.RpcConstant.*;
 
 
 /**
@@ -76,10 +75,20 @@ public class ConfigUtil {
         if (suffix.equals(RpcConstant.PROPERTIES_CONFIG_SUFFIX)) {
             Props props = new Props(configFile);
             return props.toBean(tClass, prefix);
-        } else {
+        } else if(suffix.equals(SETTING_CONFIG_SUFFIX)){
             Setting setting = new Setting(configFile);
-            setting.autoLoad(true);
+//            setting.autoLoad(true);
             return setting.toBean(prefix, tClass);
+        }else {
+            InputStream inputStream = null;
+            try {
+                inputStream = new FileInputStream("src/main/resources/"+configFile);
+                Yaml yaml = new Yaml();
+                Map<String, Object> data = yaml.load(inputStream);
+                return BeanUtil.toBean(data, tClass);
+            } catch (FileNotFoundException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 

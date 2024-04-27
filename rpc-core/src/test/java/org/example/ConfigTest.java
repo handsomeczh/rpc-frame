@@ -7,6 +7,8 @@ import com.czh.example.utils.ConfigUtil;
 import org.checkerframework.checker.units.qual.Current;
 import org.junit.Test;
 
+import java.util.Scanner;
+
 import static com.czh.example.constant.RpcConstant.*;
 
 /**
@@ -44,9 +46,10 @@ public class ConfigTest {
     @Test
     public void testSettingConfig() throws InterruptedException {
 //        RpcConfig rpcConfig = ConfigUtil.loadConfig(RpcConfig.class, DEFAULT_CONFIG_PREFIX, PROPERTIES_CONFIG_SUFFIX,DEFAULT_TEST_ENVIRONMENT);
-        RpcConfig rpcConfig = ConfigUtil.loadConfig(RpcConfig.class, DEFAULT_CONFIG_PREFIX, SETTING_CONFIG_SUFFIX);
+//        RpcConfig rpcConfig = ConfigUtil.loadConfig(RpcConfig.class, DEFAULT_CONFIG_PREFIX, SETTING_CONFIG_SUFFIX);
+        RpcConfig rpcConfig = ConfigUtil.loadConfig(RpcConfig.class, DEFAULT_CONFIG_PREFIX, YAML_CONFIG_SUFFIX);
         System.out.println(rpcConfig);
-        Thread.currentThread().sleep(100000);
+        Thread.sleep(10000);
         System.out.println(rpcConfig);
     }
 }

@@ -22,6 +22,8 @@ public class RpcConstant {
 
     public static final String SETTING_CONFIG_SUFFIX = ".setting";
 
+    public static final String YAML_CONFIG_SUFFIX = ".yaml";
+
     /**
      * 默认服务版本号
      */
