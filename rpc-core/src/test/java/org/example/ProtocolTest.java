@@ -32,7 +32,7 @@ public class ProtocolTest {
         RpcRequest rpcRequest = new RpcRequest();
         rpcRequest.setServiceName("myService");
         rpcRequest.setMethodName("myMethod");
-        rpcRequest.setServiceVersion(RpcConstant.DEFAULT_SEVICE_VERSION);
+        rpcRequest.setServiceVersion(RpcConstant.DEFAULT_SERVICE_VERSION);
         rpcRequest.setParameterTypes(new Class[]{String.class});
         rpcRequest.setArgs(new Object[]{"aaa","bbb"});
         protocolMessage.setHeader(header);

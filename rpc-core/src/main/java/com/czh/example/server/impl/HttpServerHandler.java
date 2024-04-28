@@ -12,6 +12,7 @@ import com.czh.example.model.RpcResponse;
 import com.czh.example.registry.LocalRegistry;
 import com.czh.example.serializer.Serializer;
 import com.czh.example.factory.SerializerFactory;
+import com.czh.example.serializer.impl.JdkSerializer;
 import io.vertx.core.Handler;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.HttpServerRequest;
@@ -34,11 +35,11 @@ public class HttpServerHandler implements Handler<HttpServerRequest> {
     @Override
     public void handle(HttpServerRequest request) {
 //        指定序列化器
-//        final Serializer serializer = new JdkSerializer();
+        final Serializer serializer = new JdkSerializer();
 //        使用工厂+读取配置
 
 //        记录日志
-        System.out.println("Received request:" + request.method()+" "+request.uri());
+        System.out.println("RPC框架收到请求:" + request.method() + " " + request.path()+" : " + request.uri());
 
 //        异步处理HTTP请求
         request.bodyHandler(body -> {
@@ -49,10 +50,10 @@ public class HttpServerHandler implements Handler<HttpServerRequest> {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-//        构造响应对象
+//        构造响应结果对象
             RpcResponse rpcResponse = new RpcResponse();
             if (rpcRequest == null) {
-                rpcResponse.setMessage("rpcRequest is null");
+                rpcResponse.setMessage("服务消费者请求为空！！！");
                 doResponse(request, rpcResponse, serializer);
                 return;
             }
@@ -62,12 +63,10 @@ public class HttpServerHandler implements Handler<HttpServerRequest> {
                 Class<?> implClass = LocalRegistry.get(rpcRequest.getServiceName());
                 Method method = implClass.getMethod(rpcRequest.getMethodName(), rpcRequest.getParameterTypes());
                 Object result = method.invoke(implClass.getDeclaredConstructor().newInstance(), rpcRequest.getArgs());
-//                todo NoSuchMethodException 无法实例化接口异常
-//                Object result = method.invoke(implClass.newInstance(), rpcRequest.getArgs());
 //                封装返回结果
                 rpcResponse.setData(result);
                 rpcResponse.setDataType(method.getReturnType());
-                rpcResponse.setMessage("OK");
+                rpcResponse.setMessage("调用成功！！！");
             } catch (Exception e) {
                 e.printStackTrace();
                 rpcResponse.setMessage(e.getMessage());
@@ -80,12 +79,9 @@ public class HttpServerHandler implements Handler<HttpServerRequest> {
 
     /**
      * 响应方法
-     *
-     * @param request
-     * @param rpcResponse
-     * @param serializer
      */
     private void doResponse(HttpServerRequest request, RpcResponse rpcResponse, Serializer serializer) {
+        // application/octet-stream 相对与jdk数据
         HttpServerResponse httpServerResponse = request.response().putHeader("content-type", "application/json");
         try {
             byte[] serialize = serializer.serialize(rpcResponse);
@@ -94,8 +90,5 @@ public class HttpServerHandler implements Handler<HttpServerRequest> {
             e.printStackTrace();
             httpServerResponse.end(Buffer.buffer());
         }
-
-
-
     }
 }

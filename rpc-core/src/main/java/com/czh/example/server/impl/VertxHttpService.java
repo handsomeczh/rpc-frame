@@ -22,6 +22,16 @@ public class VertxHttpService implements HttpServer {
 //        监听端口并处理请求
         server.requestHandler(new HttpServerHandler());
 
+//        server.requestHandler(request->{
+//           //处理HTTP请求
+//            System.out.println("RPC框架收到请求：" + request.method() + " : " + request.uri());
+//
+//            //发送 HTTP 响应
+//            request.response()
+//                    .putHeader("content-type","text/plain")
+//                    .end("欢迎使用RPC框架","GBK");
+//        });
+
 //        启动 HTTP 服务器并监听指定的端口
         server.listen(port, result -> {
             if (result.succeeded()) {

@@ -1,10 +1,11 @@
 package com.czh.example.serializer.impl;
 
 
+import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.json.JSONUtil;
 import com.czh.example.model.RpcRequest;
 import com.czh.example.model.RpcResponse;
 import com.czh.example.serializer.Serializer;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 
@@ -22,8 +23,6 @@ public class JsonSerializer implements Serializer {
 
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
-    //todo 实现json序列化器，可使用hutool工具类
-
     @Override
     public <T> byte[] serialize(T object) throws IOException {
         return OBJECT_MAPPER.writeValueAsBytes(object);
@@ -32,24 +31,25 @@ public class JsonSerializer implements Serializer {
     @Override
     public <T> T deserialize(byte[] bytes, Class<T> type) throws IOException {
         T object = OBJECT_MAPPER.readValue(bytes, type);
-        if(object instanceof RpcRequest){
-            return handleRequest((RpcRequest) object,type);
+        if (object instanceof RpcRequest) {
+            return handleRequest((RpcRequest) object, type);
         }
-        if (object instanceof RpcRequest){
-            return handleResponse((RpcResponse) object,type);
+        if (object instanceof RpcRequest) {
+            return handleResponse((RpcResponse) object, type);
         }
         return object;
     }
 
     /**
      * 转化原始对象
+     *
      * @param rpcRequest
      * @param type
-     * @return
      * @param <T>
+     * @return
      * @throws IOException
      */
-    private <T> T handleRequest(RpcRequest rpcRequest,Class<T> type) throws IOException{
+    private <T> T handleRequest(RpcRequest rpcRequest, Class<T> type) throws IOException {
         Class<?>[] parameterTypes = rpcRequest.getParameterTypes();
         Object[] args = rpcRequest.getArgs();
 
@@ -57,19 +57,17 @@ public class JsonSerializer implements Serializer {
         for (int i = 0; i < parameterTypes.length; i++) {
             Class<?> clazz = parameterTypes[i];
             //类型不同重新处理
-            if(!clazz.isAssignableFrom(args[i].getClass())){
+            if (!clazz.isAssignableFrom(args[i].getClass())) {
                 byte[] bytes = OBJECT_MAPPER.writeValueAsBytes(args[i]);
-                args[i] = OBJECT_MAPPER.readValue(bytes,clazz);
+                args[i] = OBJECT_MAPPER.readValue(bytes, clazz);
             }
         }
         return type.cast(rpcRequest);
     }
 
-    private <T> T handleResponse(RpcResponse rpcResponse,Class<T> type) throws IOException {
+    private <T> T handleResponse(RpcResponse rpcResponse, Class<T> type) throws IOException {
         byte[] dataBytes = OBJECT_MAPPER.writeValueAsBytes(rpcResponse.getData());
-        rpcResponse.setData(OBJECT_MAPPER.readValue(dataBytes,rpcResponse.getDataType()));
+        rpcResponse.setData(OBJECT_MAPPER.readValue(dataBytes, rpcResponse.getDataType()));
         return type.cast(rpcResponse);
     }
-
-
 }

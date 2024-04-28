@@ -1,10 +1,6 @@
 package com.czh.example.registry;
 
-/**
- * @author czh
- * @version 1.0.0
- * 2024/3/14 0:01
- */
+
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -21,31 +17,28 @@ public class LocalRegistry {
      * key ：服务名称
      * value ：服务的实现类
      */
-    private static final Map<String,Class<?>> map =new ConcurrentHashMap<>();
+    private static final Map<String,Class<?>> MAP =new ConcurrentHashMap<>();
 
     /**
      * 注册服务
-     * @param serviceName
-     * @param implClass
      */
     public static void register(String serviceName,Class<?> implClass){
-        map.put(serviceName,implClass);
+        MAP.put(serviceName,implClass);
+        System.out.println("服务提供者成功注册服务----"+"服务接口名："+serviceName
+                +"---服务实现类："+implClass);
     }
 
     /**
      * 获取服务
-     * @param serviceName
-     * @return
      */
     public static Class<?> get(String serviceName){
-        return map.get(serviceName);
+        return MAP.get(serviceName);
     }
 
     /**
      * 删除服务
-     * @param serviceName
      */
     public static void remove(String serviceName){
-        map.remove(serviceName);
+        MAP.remove(serviceName);
     }
 }

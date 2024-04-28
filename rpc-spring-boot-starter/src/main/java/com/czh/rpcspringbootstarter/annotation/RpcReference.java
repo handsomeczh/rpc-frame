@@ -33,7 +33,7 @@ public @interface RpcReference {
      *
      * @return
      */
-    String serviceVersion() default RpcConstant.DEFAULT_SEVICE_VERSION;
+    String serviceVersion() default RpcConstant.DEFAULT_SERVICE_VERSION;
 
     /**
      * 负载均衡器

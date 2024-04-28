@@ -30,5 +30,5 @@ public @interface RpcService {
      * 版本
      * @return
      */
-    String serviceVersion() default RpcConstant.DEFAULT_SEVICE_VERSION;
+    String serviceVersion() default RpcConstant.DEFAULT_SERVICE_VERSION;
 }

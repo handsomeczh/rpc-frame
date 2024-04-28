@@ -1,18 +1,32 @@
 package com.czh.example.serializer.impl;
 
+import cn.hutool.core.util.ObjectUtil;
 import com.czh.example.serializer.Serializer;
 
 import java.io.*;
 
 /**
- * @author czh
- * @version 1.0.0
- * 2024/3/14 0:15
- */
-
-/**
  * JDK 序列化器
  */
+//public class JdkSerializer implements Serializer {
+//    /**
+//     * 序列化
+//     */
+//    @Override
+//    public <T> byte[] serialize(T object) throws IOException {
+//        return ObjectUtil.serialize(object);
+//    }
+//
+//    /**
+//     * 反序列化
+//     */
+//    @Override
+//    public <T> T deserialize(byte[] bytes, Class<T> type) throws IOException {
+//        return ObjectUtil.deserialize(bytes,type);
+//    }
+//}
+
+
 public class JdkSerializer implements Serializer {
     /**
      * 序列化
