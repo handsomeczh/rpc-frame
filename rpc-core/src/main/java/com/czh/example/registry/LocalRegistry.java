@@ -24,7 +24,7 @@ public class LocalRegistry {
      */
     public static void register(String serviceName,Class<?> implClass){
         MAP.put(serviceName,implClass);
-        System.out.println("服务提供者成功注册服务----"+"服务接口名："+serviceName
+        System.out.println("LocalRegistry:服务提供者成功注册服务----"+"服务接口名："+serviceName
                 +"---服务实现类："+implClass);
     }
 

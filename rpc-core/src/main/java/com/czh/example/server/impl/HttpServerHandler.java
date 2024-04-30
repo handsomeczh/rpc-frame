@@ -1,10 +1,5 @@
 package com.czh.example.server.impl;
 
-/**
- * @author czh
- * @version 1.0.0
- * 2024/3/14 11:47
- */
 
 import com.czh.example.application.RpcApplication;
 import com.czh.example.model.RpcRequest;
@@ -12,7 +7,6 @@ import com.czh.example.model.RpcResponse;
 import com.czh.example.registry.LocalRegistry;
 import com.czh.example.serializer.Serializer;
 import com.czh.example.factory.SerializerFactory;
-import com.czh.example.serializer.impl.JdkSerializer;
 import io.vertx.core.Handler;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.HttpServerRequest;
@@ -23,9 +17,11 @@ import java.lang.reflect.Method;
 
 /**
  * HTTP 请求处理
+ * @author czh
  */
 public class HttpServerHandler implements Handler<HttpServerRequest> {
 
+    //        使用工厂+读取配置
     final Serializer serializer = SerializerFactory.getInstance(RpcApplication.getRpcConfig().getSerializer());
 
     //    反序列化请求为对象，并从请求对象中获取参数。
@@ -35,16 +31,16 @@ public class HttpServerHandler implements Handler<HttpServerRequest> {
     @Override
     public void handle(HttpServerRequest request) {
 //        指定序列化器
-        final Serializer serializer = new JdkSerializer();
-//        使用工厂+读取配置
+//        final Serializer serializer = new JsonSerializer();
 
 //        记录日志
-        System.out.println("RPC框架收到请求:" + request.method() + " " + request.path()+" : " + request.uri());
+        System.out.println("RPC框架收到请求:" + request.method() + " " + request.path() + " : " + request.uri());
 
 //        异步处理HTTP请求
         request.bodyHandler(body -> {
             byte[] bytes = body.getBytes();
             RpcRequest rpcRequest = null;
+            System.out.println("服务提供者：使用"+ RpcApplication.getRpcConfig().getSerializer() +"序列化器");
             try {
                 rpcRequest = serializer.deserialize(bytes, RpcRequest.class);
             } catch (IOException e) {

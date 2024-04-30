@@ -27,7 +27,7 @@ public interface UserService {
      * 获取新数字
      * @return
      */
-    default short getNumber(){
+    default Integer getNumber(){
         return 1;
     }
 }

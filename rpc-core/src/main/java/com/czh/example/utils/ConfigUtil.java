@@ -13,6 +13,7 @@ import cn.hutool.setting.Setting;
 import cn.hutool.setting.dialect.Props;
 import com.czh.example.config.RpcConfig;
 import com.czh.example.constant.RpcConstant;
+import com.sun.tools.javac.Main;
 import lombok.extern.slf4j.Slf4j;
 import org.yaml.snakeyaml.Yaml;
 
@@ -29,27 +30,15 @@ import static com.czh.example.constant.RpcConstant.*;
 @Slf4j
 public class ConfigUtil {
 
-    private static final String DEFAULT_FILE_PATH = "src\\main\\resources\\";
+    private static final String DEFAULT_FILE_PATH = "\\src\\main\\resources\\";
 
     /**
      * 加载配置类对象
-     *
-     * @param tClass 需要返回的配置对象
-     * @param prefix 配置文件前缀
-     * @param <T>
-     * @return
      */
     public static <T> T loadConfig(Class<T> tClass, String prefix, String suffix) {
         return loadConfig(tClass, prefix, suffix, "");
     }
 
-    /**
-     * @param tClass
-     * @param prefix
-     * @param environment 环境：test或prod
-     * @param <T>
-     * @return
-     */
     public static <T> T loadConfig(Class<T> tClass, String prefix, String suffix, String environment) {
 //        配置文件拼接
         StringBuilder configFileBuilder = new StringBuilder("application");
@@ -63,11 +52,11 @@ public class ConfigUtil {
         T config = loadConfigFromFile(tClass, prefix, configFile, suffix);
 
         // 监听配置文件变化
-        try {
-            watchConfigFile(config, tClass, prefix, configFile, suffix);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+//        try {
+//            watchConfigFile(config, tClass, prefix, configFile, suffix);
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
         return config;
     }
 
@@ -96,7 +85,10 @@ public class ConfigUtil {
     private static <T> void watchConfigFile(T config,
                                             Class<T> tClass, String prefix,
                                             String configFile, String suffix) throws IOException {
-        Path directory = Paths.get(DEFAULT_FILE_PATH); // 监听的配置文件所在目录
+        // 监听的配置文件所在目录
+        // todo 无法解决服务提供者和服务消费者路径读取问题
+        Path directory = Paths.get(DEFAULT_FILE_PATH);
+//        Path directory = Paths.get(moduleName+DEFAULT_FILE_PATH);
         WatchService watchService = FileSystems.getDefault().newWatchService();
         directory.register(watchService, StandardWatchEventKinds.ENTRY_MODIFY);
 
@@ -112,7 +104,7 @@ public class ConfigUtil {
                             Path modifiedFile = (Path) event.context();
                             if (modifiedFile.endsWith(configFile)) {
                                 System.out.println("Config file modified: " + modifiedFile);
-                                // 重新加载配置 todo 可以监听到变化但不能读取新的内容
+                                // 重新加载配置 todo 可以监听到变化但不能读取新的内容（yaml除外）
                                 T reloadedConfig = loadConfigFromFile(tClass, prefix, configFile, suffix);
                                 System.out.println("reloadedConfig:"+reloadedConfig);
                                 // 更新原始配置

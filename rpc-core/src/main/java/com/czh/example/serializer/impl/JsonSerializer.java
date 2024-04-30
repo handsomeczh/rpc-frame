@@ -13,7 +13,6 @@ import java.io.IOException;
 
 /**
  * JSON  序列化器
- * Object 的原始对象会被擦除导致反序列化时会被作为LinkedHashMap，无法转化为原始对象
  *
  * @author czh
  * @version 1.0.0
@@ -28,13 +27,14 @@ public class JsonSerializer implements Serializer {
         return OBJECT_MAPPER.writeValueAsBytes(object);
     }
 
+
     @Override
     public <T> T deserialize(byte[] bytes, Class<T> type) throws IOException {
         T object = OBJECT_MAPPER.readValue(bytes, type);
         if (object instanceof RpcRequest) {
             return handleRequest((RpcRequest) object, type);
         }
-        if (object instanceof RpcRequest) {
+        if (object instanceof RpcResponse) {
             return handleResponse((RpcResponse) object, type);
         }
         return object;
@@ -42,12 +42,7 @@ public class JsonSerializer implements Serializer {
 
     /**
      * 转化原始对象
-     *
-     * @param rpcRequest
-     * @param type
-     * @param <T>
-     * @return
-     * @throws IOException
+     * Object 的原始对象会被擦除导致反序列化时会被作为LinkedHashMap，无法转化为原始对象
      */
     private <T> T handleRequest(RpcRequest rpcRequest, Class<T> type) throws IOException {
         Class<?>[] parameterTypes = rpcRequest.getParameterTypes();

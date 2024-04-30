@@ -28,7 +28,7 @@ public class RpcConfig {
     /**
      * 名称
      */
-    private String name = "服务提供者";
+    private String name = "Rpc框架-默认配置";
 
     /**
      * 版本号
@@ -52,9 +52,8 @@ public class RpcConfig {
 
     /**
      * 序列化器
-     * 目前仅支持JDK,kryo
      */
-    private String serializer = SerializerConstants.KRYO;
+    private String serializer = SerializerConstants.JSON;
 
     /**
      * 注册中心配置

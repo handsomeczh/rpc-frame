@@ -24,9 +24,6 @@ public class RegistryFactory {
 
     /**
      * 获取实例
-     *
-     * @param key
-     * @return
      */
     public static Registry getInstance(String key) {
         return SpiLoader.getInstance(Registry.class, key);

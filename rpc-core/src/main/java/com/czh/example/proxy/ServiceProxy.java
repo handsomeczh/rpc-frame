@@ -3,9 +3,12 @@ package com.czh.example.proxy;
 
 import cn.hutool.http.HttpRequest;
 import cn.hutool.http.HttpResponse;
+import com.czh.example.application.RpcApplication;
+import com.czh.example.config.RpcConfig;
+import com.czh.example.factory.SerializerFactory;
 import com.czh.example.model.RpcRequest;
 import com.czh.example.model.RpcResponse;
-import com.czh.example.serializer.impl.JdkSerializer;
+import com.czh.example.serializer.Serializer;
 
 
 import java.lang.reflect.InvocationHandler;
@@ -15,19 +18,23 @@ import java.lang.reflect.Method;
  * JDK动态代理
  * invocation:调用
  * declare:声明
+ * @author czh
  */
 public class ServiceProxy implements InvocationHandler {
 
+    // 获取序列化器
+    final Serializer serializer = SerializerFactory.getInstance(RpcApplication.getRpcConfig().getSerializer());
 
     /**
      * 调用代理
      */
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) {
-        //指定序列化器
-        JdkSerializer serializer = new JdkSerializer();
+//        //指定序列化器
+//        Serializer serializer = new JsonSerializer();
 
 //        构造请求
+
         String serviceName = method.getDeclaringClass().getName();
         RpcRequest rpcRequest = RpcRequest.builder()
                 .serviceName(serviceName)
@@ -37,6 +44,7 @@ public class ServiceProxy implements InvocationHandler {
                 .build();
         try {
             // 序列化
+            System.out.println("服务消费者：使用"+ RpcApplication.getRpcConfig().getSerializer() +"序列化器");
             byte[] bodyBytes = serializer.serialize(rpcRequest);
             //发送请求
             try (HttpResponse httpResponse = HttpRequest.post("http://localhost:8080")

@@ -1,10 +1,6 @@
 package com.czh.example.application;
 
 import com.czh.example.config.RpcConfig;
-import com.czh.example.constant.RpcConstant;
-import com.czh.example.factory.RegistryFactory;
-import com.czh.example.registry.Registry;
-import com.czh.example.config.RegistryConfig;
 import com.czh.example.utils.ConfigUtil;
 import lombok.extern.slf4j.Slf4j;
 
@@ -33,8 +29,6 @@ public class RpcApplication {
 
     /**
      * 框架初始化，支持自定义配置
-     *
-     * @param newRpcConfig
      */
     public static void init(RpcConfig newRpcConfig) {
         rpcConfig = newRpcConfig;
@@ -62,8 +56,6 @@ public class RpcApplication {
 
     /**
      * 获取配置
-     *
-     * @return
      */
     public static RpcConfig getRpcConfig() {
         if (rpcConfig == null) {

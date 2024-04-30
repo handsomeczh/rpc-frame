@@ -2,20 +2,16 @@ package com.czh.example.spi;
 
 import cn.hutool.core.io.resource.ResourceUtil;
 import com.czh.example.serializer.Serializer;
-import com.czh.example.serializer.SerializerConstants;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
-import java.lang.invoke.VarHandle;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
 
 /**
  * SPI 加载器（支持键值对映射）
@@ -66,7 +62,7 @@ public class SpiLoader {
      * 加载所有类型
      */
     public static void loadAll() {
-        log.info("加载了所有SPI");
+        log.info("SpiLoader：加载所有SPI");
         for (Class<?> aClass : LOAD_CLASS_LIST) {
             load(aClass);
         }
@@ -74,17 +70,12 @@ public class SpiLoader {
 
     /**
      * 加载某个类型
-     *
-     * @param loadClass
-     * @return
      */
     public static Map<String, Class<?>> load(Class<?> loadClass) {
 
-        log.info("加载类型为{}的SPI", loadClass.getName());
-//        扫描路径，用户自定义的SPI优先级高于系统SPI
+        log.info("SpiLoader：加载类型为{}的SPI", loadClass.getName());
         HashMap<String, Class<?>> keyClassMap = new HashMap<>();
         for (String scanDir : SCAN_DIRS) {
-            //todo 无法获取resources
             List<URL> resources = ResourceUtil.getResources(scanDir + loadClass.getName());
             //读取每个资源文件
             for (URL resource : resources) {
@@ -98,6 +89,8 @@ public class SpiLoader {
                             String key = strArray[0];
                             String className = strArray[1];
                             keyClassMap.put(key, Class.forName(className));
+                        }else{
+                            System.out.println("SpiLoader: 配置文件"+resource.getPath()+"有错误信息");
                         }
                     }
                 } catch (Exception e) {
@@ -111,11 +104,6 @@ public class SpiLoader {
 
     /**
      * 获取某个接口实例
-     *
-     * @param tClass
-     * @param key
-     * @param <T>
-     * @return
      */
     public static <T> T getInstance(Class<T> tClass, String key) {
         String tClassName = tClass.getName();
@@ -132,8 +120,8 @@ public class SpiLoader {
         String implClassName = implClass.getName();
         if(!instanceCache.containsKey(implClassName)){
             try {
-                instanceCache.put(implClassName,implClass.newInstance());
-            }catch (InstantiationException | IllegalAccessException e){
+                instanceCache.put(implClassName,implClass.getDeclaredConstructor().newInstance());
+            }catch (Exception e){
                 String errorMsg = String.format("%s 类实例化失败", implClassName);
                 throw new RuntimeException(errorMsg,e);
             }
