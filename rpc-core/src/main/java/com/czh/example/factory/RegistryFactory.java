@@ -18,7 +18,7 @@ public class RegistryFactory {
     }
 
     /**
-     * 默认序列化器
+     * 默认注册中心
      */
     private static final Registry DEFAULT_REGISTRY = new EtcdRegistry();
 

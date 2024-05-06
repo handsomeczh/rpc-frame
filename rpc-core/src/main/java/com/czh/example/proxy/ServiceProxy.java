@@ -1,23 +1,30 @@
 package com.czh.example.proxy;
 
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.http.HttpRequest;
 import cn.hutool.http.HttpResponse;
 import com.czh.example.application.RpcApplication;
 import com.czh.example.config.RpcConfig;
+import com.czh.example.constant.RpcConstant;
+import com.czh.example.factory.RegistryFactory;
 import com.czh.example.factory.SerializerFactory;
 import com.czh.example.model.RpcRequest;
 import com.czh.example.model.RpcResponse;
+import com.czh.example.model.ServiceMetaInfo;
+import com.czh.example.registry.Registry;
 import com.czh.example.serializer.Serializer;
 
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
+import java.util.List;
 
 /**
  * JDK动态代理
  * invocation:调用
  * declare:声明
+ *
  * @author czh
  */
 public class ServiceProxy implements InvocationHandler {
@@ -44,10 +51,24 @@ public class ServiceProxy implements InvocationHandler {
                 .build();
         try {
             // 序列化
-            System.out.println("服务消费者：使用"+ RpcApplication.getRpcConfig().getSerializer() +"序列化器");
+            System.out.println("服务消费者：使用" + RpcApplication.getRpcConfig().getSerializer() + "序列化器");
             byte[] bodyBytes = serializer.serialize(rpcRequest);
+
+            //从注册中心获取服务提供者请求地址
+            RpcConfig rpcConfig = RpcApplication.getRpcConfig();
+            Registry registry = RegistryFactory.getInstance(rpcConfig.getRegistryConfig().getRegistry());
+            ServiceMetaInfo serviceMetaInfo = new ServiceMetaInfo();
+            serviceMetaInfo.setServiceName(serviceName);
+            serviceMetaInfo.setServiceVersion(RpcConstant.DEFAULT_SERVICE_VERSION);
+            List<ServiceMetaInfo> serviceMetaInfoList = registry.serviceDiscovery(serviceMetaInfo.getServiceKey());
+            if (CollUtil.isEmpty(serviceMetaInfoList)) {
+                throw new RuntimeException("暂无服务地址");
+            }
+            // 暂时无负载均衡，取第一个
+            ServiceMetaInfo selectedServiceMetaInfo = serviceMetaInfoList.get(0);
+
             //发送请求
-            try (HttpResponse httpResponse = HttpRequest.post("http://localhost:8080")
+            try (HttpResponse httpResponse = HttpRequest.post(selectedServiceMetaInfo.getServiceAddress())
                     .body(bodyBytes)
                     .execute()) {
                 byte[] result = httpResponse.bodyBytes();

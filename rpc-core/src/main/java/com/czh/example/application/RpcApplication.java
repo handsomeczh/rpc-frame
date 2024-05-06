@@ -1,6 +1,9 @@
 package com.czh.example.application;
 
+import com.czh.example.config.RegistryConfig;
 import com.czh.example.config.RpcConfig;
+import com.czh.example.factory.RegistryFactory;
+import com.czh.example.registry.Registry;
 import com.czh.example.utils.ConfigUtil;
 import lombok.extern.slf4j.Slf4j;
 
@@ -33,12 +36,12 @@ public class RpcApplication {
     public static void init(RpcConfig newRpcConfig) {
         rpcConfig = newRpcConfig;
         log.info("rpc init, config = {}", rpcConfig.toString());
-//        //注册中心初始化
-//        RegistryConfig registryConfig = rpcConfig.getRegistryConfig();
-//        Registry registry = RegistryFactory.getInstance(registryConfig.getRegistry());
-//        registry.init(registryConfig);
-//        log.info("registry init, config = {}",registryConfig);
-//
+        //注册中心初始化
+        RegistryConfig registryConfig = rpcConfig.getRegistryConfig();
+        Registry registry = RegistryFactory.getInstance(registryConfig.getRegistry());
+        registry.init(registryConfig);
+        log.info("registry init, config = {}",registryConfig);
+
 ////        创建并注册Shutdown Hook ，jvm退出时执行操作
 //        Runtime.getRuntime().addShutdownHook(new Thread(registry::destroy));
     }

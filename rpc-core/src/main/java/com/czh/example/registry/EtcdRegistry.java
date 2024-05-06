@@ -53,8 +53,6 @@ public class EtcdRegistry implements Registry {
     /**
      * 初始化
      * 读取注册中心配置并初始化客户端对象
-     *
-     * @param registryConfig
      */
     @Override
     public void init(RegistryConfig registryConfig) {
@@ -69,9 +67,6 @@ public class EtcdRegistry implements Registry {
 
     /**
      * 注册服务（服务端）
-     *
-     * @param serviceMetaInfo
-     * @throws Exception
      */
     @Override
     public void register(ServiceMetaInfo serviceMetaInfo) throws Exception {
@@ -98,8 +93,6 @@ public class EtcdRegistry implements Registry {
 
     /**
      * 注销服务（服务端）,删除key
-     *
-     * @param serviceMetaInfo
      */
     @Override
     public void unRegister(ServiceMetaInfo serviceMetaInfo) {
@@ -111,9 +104,6 @@ public class EtcdRegistry implements Registry {
 
     /**
      * 服务发现（获取某服务的所有节点，消费端）
-     *
-     * @param serviceKey 服务键名
-     * @return
      */
     @Override
     public List<ServiceMetaInfo> serviceDiscovery(String serviceKey) {
@@ -155,7 +145,7 @@ public class EtcdRegistry implements Registry {
     public void destroy() {
         System.out.println("当前节点下线");
         //下线节点
-        //遍历本届点所有的key
+        //遍历本节点所有的key
         for (String key : localRegisterNodeKeySet) {
             try {
                 kvClient.delete(ByteSequence.from(key, StandardCharsets.UTF_8))

@@ -19,8 +19,8 @@ public class RegistryConfig {
 
     /**
      * 注册中心地址
-     * zookeeper:2181
-     * etcd:2379
+     * Etcd :2379
+     * Redis : 6379
      */
     private String address = "http://localhost:2379";
 
@@ -38,6 +38,5 @@ public class RegistryConfig {
      * 超时时间（单位毫秒）
      */
     private Long timeout = 10000L;
-
 
 }
