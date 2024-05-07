@@ -7,7 +7,6 @@ import java.util.List;
 
 /**
  * 注册中心接口
- * todo 后续可以实现多种不同注册中心，并且和序列化器一样，可以使用SPI机制动态加载
  * @author czh
  * @version 1.0.0
  * 2024/3/20 10:43

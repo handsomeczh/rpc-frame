@@ -61,7 +61,9 @@ public class EtcdRegistry implements Registry {
                 .connectTimeout(Duration.ofMillis(registryConfig.getTimeout()))
                 .build();
 
+        System.out.println("Etcd注册中心初始化完成");
         kvClient = client.getKVClient();
+        System.out.println("Etcd心跳检测开启");
         heartBeat();
     }
 
@@ -110,6 +112,7 @@ public class EtcdRegistry implements Registry {
         //优先从缓存获取服务
         List<ServiceMetaInfo> cacheServiceMetaInfoList = registryServiceCache.readCache();
         if (cacheServiceMetaInfoList != null && cacheServiceMetaInfoList.size() != 0) {
+            System.out.println("RPC服务提供者-从服务提供者本地缓存获取服务对象");
             return cacheServiceMetaInfoList;
         }
 
@@ -132,6 +135,7 @@ public class EtcdRegistry implements Registry {
                 return JSONUtil.toBean(value, ServiceMetaInfo.class);
             }).collect(Collectors.toList());
             registryServiceCache.writeCache(serviceMetaInfoList);
+            System.out.println("RPC服务提供者-从注册中心服务发现");
             return serviceMetaInfoList;
         } catch (Exception e) {
             throw new RuntimeException("获取服务列表失败", e);
@@ -169,27 +173,24 @@ public class EtcdRegistry implements Registry {
     @Override
     public void heartBeat() {
 //        每10秒续签一次
-        CronUtil.schedule("*/10 * * * * *", new Task() {
-            @Override
-            public void execute() {
-                //遍历本节点所有的key
-                for (String key : localRegisterNodeKeySet) {
-                    try {
-                        List<KeyValue> keyValues = kvClient.get(ByteSequence.from(key, StandardCharsets.UTF_8))
-                                .get()
-                                .getKvs();
-                        //该节点已过期（需要重启节点才能重新注册）
-                        if (CollUtil.isEmpty(keyValues)) {
-                            continue;
-                        }
-                        //节点未过期，重新注册（相当于续签）
-                        KeyValue keyValue = keyValues.get(0);
-                        String value = keyValue.getValue().toString(StandardCharsets.UTF_8);
-                        ServiceMetaInfo serviceMetaInfo = JSONUtil.toBean(value, ServiceMetaInfo.class);
-                        register(serviceMetaInfo);
-                    } catch (Exception e) {
-                        throw new RuntimeException(key + "续签失败", e);
+        CronUtil.schedule("*/10 * * * * *", (Task) () -> {
+            //遍历本节点所有的key
+            for (String key : localRegisterNodeKeySet) {
+                try {
+                    List<KeyValue> keyValues = kvClient.get(ByteSequence.from(key, StandardCharsets.UTF_8))
+                            .get()
+                            .getKvs();
+                    //该节点已过期（需要重启节点才能重新注册）
+                    if (CollUtil.isEmpty(keyValues)) {
+                        continue;
                     }
+                    //节点未过期，重新注册（相当于续签）
+                    KeyValue keyValue = keyValues.get(0);
+                    String value = keyValue.getValue().toString(StandardCharsets.UTF_8);
+                    ServiceMetaInfo serviceMetaInfo = JSONUtil.toBean(value, ServiceMetaInfo.class);
+                    register(serviceMetaInfo);
+                } catch (Exception e) {
+                    throw new RuntimeException(key + "续签失败", e);
                 }
             }
         });
@@ -202,8 +203,6 @@ public class EtcdRegistry implements Registry {
     /**
      * 监听（消费端）
      * !: 即使key在注册中心被删除后再重新设置，之前的监听依旧生效，所以只监听首次加入到监听集合的key
-     *
-     * @param serviceNodeKey
      */
     @Override
     public void watch(String serviceNodeKey) {
