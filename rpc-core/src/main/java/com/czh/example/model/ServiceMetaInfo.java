@@ -49,7 +49,7 @@ public class ServiceMetaInfo {
     private String serviceGroup = "default";
 
     /**
-     * 获取服务键名
+     * 获取服务键名，当为Redis时作为键名延用
      */
     public String getServiceKey() {
         //后续可扩展服务分组
@@ -63,6 +63,13 @@ public class ServiceMetaInfo {
     public String getServiceNodeKey() {
         return String.format("%s/%s:%s", getServiceKey(), serviceHost,servicePort);
         // serviceImpl:1.0/127.0.0.1:8001
+    }
+
+    /**
+     * 获取服务注册节点value,Redis使用
+     */
+    public String getRedisServiceKey(){
+        return String.format("%s:%s:%s:%s",serviceName,serviceVersion,serviceHost,servicePort);
     }
 
     /**

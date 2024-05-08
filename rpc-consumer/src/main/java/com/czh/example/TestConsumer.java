@@ -20,6 +20,5 @@ public class TestConsumer {
         System.out.println(userService.getUser(user));
         user.setName("王五");
         System.out.println(userService.getUser(user));
-
     }
 }

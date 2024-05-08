@@ -13,15 +13,28 @@ import lombok.Data;
 public class RegistryConfig {
 
     /**
-     * 注册中心类别
+     * 注册中心类别 etcd/redis/zookeeper
      */
+//    private String registry = "redis";
     private String registry = "etcd";
+
+    /**
+     * 注册中IP地址
+     */
+    private String host = "127.0.0.1";
+//    private String host = "192.168.88.128";
+
+    /**
+     * 注册中心端口
+     */
+    private Integer port = 6379;
 
     /**
      * 注册中心地址
      * Etcd :2379
-     * Redis : 6379
+     * Redis : 192.168.88.128:2379
      */
+//    private String address = "http://192.168.88.128:6379";
     private String address = "http://localhost:2379";
 
     /**
@@ -32,7 +45,7 @@ public class RegistryConfig {
     /**
      * 密码
      */
-    private String password;
+    private String password = "123456";
 
     /**
      * 超时时间（单位毫秒）

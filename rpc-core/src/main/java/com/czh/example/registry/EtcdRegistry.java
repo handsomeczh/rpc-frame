@@ -32,9 +32,7 @@ public class EtcdRegistry implements Registry {
      */
     private final Set<String> watchKeySet = new ConcurrentHashSet<>();
 
-    /**
-     * 注册中心服务缓存
-     */
+    // 注册中心服务缓存
     private final RegistryServiceCache registryServiceCache = new RegistryServiceCache();
 
     //本机注册的节点key集合（用于维护续期）
@@ -43,6 +41,8 @@ public class EtcdRegistry implements Registry {
     private Client client;
 
     private KV kvClient;
+
+    private Long ETCD_TTL = 10L;
 
     /**
      * 根节点
@@ -76,7 +76,7 @@ public class EtcdRegistry implements Registry {
         Lease leaseClient = client.getLeaseClient();
 
         //创建一个30秒的租约 grant:授予
-        long leaseId = leaseClient.grant(30).get().getID();
+        long leaseId = leaseClient.grant(ETCD_TTL).get().getID();
 
         //设置要存储的键值对
         String registryKey = ETCD_ROOT_PATH + serviceMetaInfo.getServiceNodeKey();
@@ -112,7 +112,7 @@ public class EtcdRegistry implements Registry {
         //优先从缓存获取服务
         List<ServiceMetaInfo> cacheServiceMetaInfoList = registryServiceCache.readCache();
         if (cacheServiceMetaInfoList != null && cacheServiceMetaInfoList.size() != 0) {
-            System.out.println("RPC服务提供者-从服务提供者本地缓存获取服务对象");
+            System.out.println("RPC框架-从服务消费者本地缓存获取服务对象");
             return cacheServiceMetaInfoList;
         }
 
@@ -141,6 +141,8 @@ public class EtcdRegistry implements Registry {
             throw new RuntimeException("获取服务列表失败", e);
         }
     }
+
+
 
     /**
      * 服务销毁,用于项目关闭后释放资源
