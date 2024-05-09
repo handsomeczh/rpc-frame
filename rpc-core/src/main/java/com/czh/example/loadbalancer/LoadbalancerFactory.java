@@ -22,11 +22,9 @@ public class LoadbalancerFactory {
 
     /**
      * 获取实例
-     *
-     * @param key
-     * @return
      */
     public static LoadBalancer getInstance(String key) {
+        System.out.println("使用了"+key+"负载均衡器");
         return SpiLoader.getInstance(LoadBalancer.class, key);
     }
 

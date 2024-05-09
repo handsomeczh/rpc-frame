@@ -15,6 +15,4 @@ public interface LoadBalancerConstant {
 
     String CONSISTENT_HASH = "consistentHash";
 
-//    todo 实现更多不同算法的负载均衡器：选择最少活跃数负载均衡器
-
 }

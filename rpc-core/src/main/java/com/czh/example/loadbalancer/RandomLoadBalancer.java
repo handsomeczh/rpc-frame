@@ -19,10 +19,6 @@ public class RandomLoadBalancer implements LoadBalancer {
 
     /**
      * 选择服务调用
-     *
-     * @param requestParams       请求参数
-     * @param serviceMetaInfoList 可用服务列表
-     * @return
      */
     @Override
     public ServiceMetaInfo select(Map<String, Object> requestParams, List<ServiceMetaInfo> serviceMetaInfoList) {
@@ -34,6 +30,5 @@ public class RandomLoadBalancer implements LoadBalancer {
             return serviceMetaInfoList.get(0);
         }
         return serviceMetaInfoList.get(random.nextInt(size));
-
     }
 }

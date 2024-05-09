@@ -48,7 +48,8 @@ public class EasyProviderExample {
 
 //      启动web服务
         VertxTcpServer vertxTcpServer = new VertxTcpServer();
-        vertxTcpServer.doStart(8080);
+        //开启多个线程时改变端口，包括配置文件端口
+        vertxTcpServer.doStart(8081);
     }
 }
 
