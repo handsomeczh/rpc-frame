@@ -34,8 +34,6 @@ public enum ProtocolMessageSerializerEnum {
 
     /**
      * 获取列表值
-     *
-     * @return
      */
     public static List<String> getValues() {
         return Arrays.stream(values()).map(item -> item.value).collect(Collectors.toList());
@@ -43,9 +41,6 @@ public enum ProtocolMessageSerializerEnum {
 
     /**
      * 根据key获取枚举
-     *
-     * @param key
-     * @return
      */
     public static ProtocolMessageSerializerEnum getEnumByKey(int key) {
         for (ProtocolMessageSerializerEnum anEnum : ProtocolMessageSerializerEnum.values()) {
@@ -58,9 +53,6 @@ public enum ProtocolMessageSerializerEnum {
 
     /**
      * 根据value获取枚举
-     *
-     * @param value
-     * @return
      */
     public static ProtocolMessageSerializerEnum getEnumByValue(String value) {
         if (ObjectUtil.isEmpty(value)) {

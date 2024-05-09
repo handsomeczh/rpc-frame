@@ -9,6 +9,8 @@ import io.vertx.core.buffer.Buffer;
 
 import java.io.IOException;
 
+import static com.czh.example.protocol.ProtocolConstant.MESSAGE_HEADER_LENGTH;
+
 /**
  * 协议消息解码器
  * @author czh
@@ -32,7 +34,7 @@ public class ProtocolMessageDecoder {
         header.setRequestId(buffer.getByte(5));
         header.setBodyLength(buffer.getInt(13));
         //解决粘包问题，只读指定长度的数据
-        byte[] bodyBytes = buffer.getBytes(17, 17 + header.getBodyLength());
+        byte[] bodyBytes = buffer.getBytes(MESSAGE_HEADER_LENGTH, MESSAGE_HEADER_LENGTH + header.getBodyLength());
         //解析消息体
         ProtocolMessageSerializerEnum serializerEnum = ProtocolMessageSerializerEnum.getEnumByKey(header.getSerializer());
         if(serializerEnum == null){
@@ -40,17 +42,19 @@ public class ProtocolMessageDecoder {
         }
         Serializer serializer = SerializerFactory.getInstance(serializerEnum.getValue());
         ProtocolMessageTypeEnum messageTypeEnum = ProtocolMessageTypeEnum.getEnumByKey(header.getType());
-        switch(messageTypeEnum){
-            case REQUEST :
+        if(messageTypeEnum == null){
+            throw new RuntimeException("消息类型不存在");
+        }
+        switch (messageTypeEnum) {
+            case REQUEST -> {
                 RpcRequest request = serializer.deserialize(bodyBytes, RpcRequest.class);
-                return new ProtocolMessage<>(header,request);
-            case RESPONSE:
+                return new ProtocolMessage<>(header, request);
+            }
+            case RESPONSE -> {
                 RpcResponse rpcResponse = serializer.deserialize(bodyBytes, RpcResponse.class);
-                return new ProtocolMessage<>(header,rpcResponse);
-            case HEART_BEAT:
-            case OTHERS:
-            default:
-                throw new RuntimeException("暂不支持该消息类型");
+                return new ProtocolMessage<>(header, rpcResponse);
+            }
+            default -> throw new RuntimeException("暂不支持该消息类型");
         }
     }
 }

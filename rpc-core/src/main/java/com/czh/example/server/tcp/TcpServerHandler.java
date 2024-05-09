@@ -23,11 +23,10 @@ public class TcpServerHandler implements Handler<NetSocket> {
 
     /**
      * 处理请求
-     *
-     * @param socket
      */
     @Override
     public void handle(NetSocket socket) {
+        // 获取socket的输入输出流
         TcpBufferHandlerWrapper tcpBufferHandlerWrapper = new TcpBufferHandlerWrapper(buffer -> {
             // 接受请求，解码
             ProtocolMessage<RpcRequest> protocolMessage;
@@ -46,7 +45,7 @@ public class TcpServerHandler implements Handler<NetSocket> {
                 // 获取要调用的服务实现类，通过反射调用
                 Class<?> implClass = LocalRegistry.get(rpcRequest.getServiceName());
                 Method method = implClass.getMethod(rpcRequest.getMethodName(), rpcRequest.getParameterTypes());
-                Object result = method.invoke(implClass.newInstance(), rpcRequest.getArgs());
+                Object result = method.invoke(implClass.getDeclaredConstructor().newInstance(), rpcRequest.getArgs());
                 // 封装返回结果
                 rpcResponse.setData(result);
                 rpcResponse.setDataType(method.getReturnType());

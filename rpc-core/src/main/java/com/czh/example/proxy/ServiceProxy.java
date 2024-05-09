@@ -2,6 +2,7 @@ package com.czh.example.proxy;
 
 
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.util.IdUtil;
 import cn.hutool.http.HttpRequest;
 import cn.hutool.http.HttpResponse;
 import com.czh.example.application.RpcApplication;
@@ -12,13 +13,20 @@ import com.czh.example.factory.SerializerFactory;
 import com.czh.example.model.RpcRequest;
 import com.czh.example.model.RpcResponse;
 import com.czh.example.model.ServiceMetaInfo;
+import com.czh.example.protocol.*;
 import com.czh.example.registry.Registry;
 import com.czh.example.serializer.Serializer;
+import com.czh.example.server.tcp.VertxTcpClient;
+import io.vertx.core.Vertx;
+import io.vertx.core.buffer.Buffer;
+import io.vertx.core.net.NetClient;
 
 
+import java.io.IOException;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * JDK动态代理
@@ -37,11 +45,7 @@ public class ServiceProxy implements InvocationHandler {
      */
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) {
-//        //指定序列化器
-//        Serializer serializer = new JsonSerializer();
-
 //        构造请求
-
         String serviceName = method.getDeclaringClass().getName();
         RpcRequest rpcRequest = RpcRequest.builder()
                 .serviceName(serviceName)
@@ -53,7 +57,6 @@ public class ServiceProxy implements InvocationHandler {
             // 序列化
             System.out.println("服务消费者：使用" + RpcApplication.getRpcConfig().getSerializer() + "序列化器");
             byte[] bodyBytes = serializer.serialize(rpcRequest);
-
             //从注册中心获取服务提供者请求地址
             RpcConfig rpcConfig = RpcApplication.getRpcConfig();
             Registry registry = RegistryFactory.getInstance(rpcConfig.getRegistryConfig().getRegistry());
@@ -67,15 +70,9 @@ public class ServiceProxy implements InvocationHandler {
             // 暂时无负载均衡，取第一个
             ServiceMetaInfo selectedServiceMetaInfo = serviceMetaInfoList.get(0);
 
-            //发送请求
-            try (HttpResponse httpResponse = HttpRequest.post(selectedServiceMetaInfo.getServiceAddress())
-                    .body(bodyBytes)
-                    .execute()) {
-                byte[] result = httpResponse.bodyBytes();
-                //反序列化
-                RpcResponse rpcResponse = serializer.deserialize(result, RpcResponse.class);
-                return rpcResponse.getData();
-            }
+            //发送tcp请求
+            RpcResponse rpcResponse = VertxTcpClient.doRequest(rpcRequest, selectedServiceMetaInfo);
+            return rpcResponse.getData();
         } catch (Exception e) {
             e.printStackTrace();
         }

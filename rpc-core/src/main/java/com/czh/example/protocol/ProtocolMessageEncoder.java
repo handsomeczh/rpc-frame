@@ -17,10 +17,6 @@ public class ProtocolMessageEncoder {
 
     /**
      * 编码
-     *
-     * @param protocolMessage
-     * @return
-     * @throws IOException
      */
     public static Buffer encode(ProtocolMessage<?> protocolMessage) throws IOException {
         if(protocolMessage == null || protocolMessage.getHeader() == null){

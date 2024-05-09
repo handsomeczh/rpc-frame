@@ -14,19 +14,15 @@ import java.lang.invoke.VarHandle;
  * @version 1.0.0
  * 2024/3/21 21:14
  */
-@Slf4j
 public class VertxTcpServer implements HttpServer {
 
     private byte[] handleRequest(byte[] requestData) {
-        // todo 编写处理请求的逻辑，根据requestData构造响应数据并返回
         //实际逻辑需要根据具体的业务需求来实现
-        return "Hello, client".getBytes();
+        return "你好，客户端，使用的是Vert.x的TCP服务".getBytes();
     }
 
     /**
      * 启动服务器
-     *
-     * @param port
      */
     @Override
     public void doStart(int port) {
@@ -41,9 +37,9 @@ public class VertxTcpServer implements HttpServer {
 
         server.listen(port, result -> {
             if (result.succeeded()) {
-                System.out.println("TCP server started on port: " + port);
+                System.out.println("TCP服务启动于端口: " + port);
             } else {
-                System.out.println("Failed to start TCP server: " + result.cause());
+                System.out.println("无法启动TCP服务: " + result.cause());
             }
         });
 
