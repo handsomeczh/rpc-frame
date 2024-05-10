@@ -17,16 +17,10 @@ import java.util.Map;
 public class FailsafeTolerantStrategy implements TolerantStrategy {
     /**
      * 容错
-     *
-     * @param context 上下文用于传递数据
-     * @param e       异常
-     * @return
      */
     @Override
     public RpcResponse doTolerant(Map<String, Object> context, Exception e) {
         log.info("静默处理异常", e);
         return new RpcResponse();
     }
-
-
 }

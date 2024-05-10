@@ -1,6 +1,7 @@
 package com.czh.example.fault.tolerant;
 
 import com.czh.example.model.RpcResponse;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.Map;
 
@@ -12,16 +13,14 @@ import java.util.Map;
  * @version 1.0.0
  * 2024/3/25 11:11
  */
+@Slf4j
 public class FailFastTolerantStrategy implements TolerantStrategy {
     /**
      * 容错
-     *
-     * @param context 上下文用于传递数据
-     * @param e       异常
-     * @return
      */
     @Override
     public RpcResponse doTolerant(Map<String, Object> context, Exception e) {
+        log.info("快速失败容错机制");
         throw new RuntimeException("服务错误", e);
     }
 }
