@@ -23,43 +23,31 @@ public @interface RpcReference {
 
     /**
      * 服务接口类
-     *
-     * @return
      */
     Class<?> interfaceClass() default void.class;
 
     /**
      * 版本
-     *
-     * @return
      */
     String serviceVersion() default RpcConstant.DEFAULT_SERVICE_VERSION;
 
     /**
      * 负载均衡器
-     *
-     * @return
      */
     String loadBalancer() default LoadBalancerConstant.ROUND_ROBIN;
 
     /**
      * 重试策略
-     *
-     * @return
      */
     String retryStrategy() default RetryStrategyConstant.NO;
 
     /**
      * 容错策略
-     *
-     * @return
      */
     String tolerantStrategy() default TolerantStrategyConstant.FAIL_FAST;
 
     /**
      * 模拟调用
-     *
-     * @return
      */
     boolean mock() default false;
 }

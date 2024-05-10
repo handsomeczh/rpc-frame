@@ -22,7 +22,6 @@ public class ProviderBootStrap {
 
     /**
      * 初始化
-     * @param serviceRegisterInfoList
      */
     public static void init(ArrayList<ServiceRegisterInfo> serviceRegisterInfoList){
         //RPC框架初始化（配置和注册中心）

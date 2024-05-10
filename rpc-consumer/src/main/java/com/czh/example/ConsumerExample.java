@@ -16,22 +16,12 @@ import com.czh.example.service.UserService;
  */
 public class ConsumerExample {
     public static void main(String[] args) {
-//        加载配置文件
-//        ConfigUtil.loadConfig(RpcConfig.class, "rpc");
-
         //服务提供者初始化
         ConsumerBootstrap.init();
 
         UserService userService = ServiceProxyFactory.getProxy(UserService.class);
         User user = new User();
-        user.setName("czh");
-        System.out.println("第一次调用");
-        User newUser = userService.getUser(user);
-        if (newUser != null) {
-            System.out.println(newUser.getName());
-        } else {
-            System.out.println("new == null");
-        }
-        System.out.println(userService.getNumber());
+        user.setName("张三");
+        System.out.println(userService.getUser(user));
     }
 }

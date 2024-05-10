@@ -22,13 +22,11 @@ public @interface RpcService {
 
     /**
      * 服务接口类
-     * @return
      */
     Class<?> interfaceClass() default void.class;
 
     /**
      * 版本
-     * @return
      */
     String serviceVersion() default RpcConstant.DEFAULT_SERVICE_VERSION;
 }

@@ -23,6 +23,7 @@ import java.lang.annotation.Target;
 /**
  * 启用Rpc注解
  * Retention: 保留
+ * @author Lenovo
  */
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
@@ -31,8 +32,6 @@ public @interface EnableRpc {
 
     /**
      * 需要启动server
-     *
-     * @return
      */
     boolean needServer() default true;
 }
