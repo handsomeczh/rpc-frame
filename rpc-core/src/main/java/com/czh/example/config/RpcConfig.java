@@ -1,16 +1,8 @@
 package com.czh.example.config;
 
-/**
- * @author czh
- * @version 1.0.0
- * 2024/3/15 17:35
- */
 
-import com.czh.example.fault.retry.RetryStrategy;
 import com.czh.example.fault.retry.RetryStrategyConstant;
-import com.czh.example.fault.tolerant.TolerantStrategy;
 import com.czh.example.fault.tolerant.TolerantStrategyConstant;
-import com.czh.example.loadbalancer.LoadBalancer;
 import com.czh.example.loadbalancer.LoadBalancerConstant;
 import com.czh.example.serializer.SerializerConstants;
 import lombok.AllArgsConstructor;

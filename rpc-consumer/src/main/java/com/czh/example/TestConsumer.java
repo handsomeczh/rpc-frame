@@ -16,33 +16,10 @@ public class TestConsumer {
         User user = new User();
         user.setName("张三");
         System.out.println(userService.getUser(user));
-        user.setName("李四");
-        System.out.println(userService.getUser(user));
-        user.setName("王五");
-        System.out.println(userService.getUser(user));
-        System.out.println(userService.getUser(user));
-        System.out.println(userService.getUser(user));
-        System.out.println(userService.getUser(user));
-        System.out.println(userService.getUser(user));
-        System.out.println(userService.getUser(user));
-        System.out.println(userService.getUser(user));
-        System.out.println(userService.getUser(user));
-        System.out.println(userService.getUser(user));
-        System.out.println(userService.getUser(user));
-        System.out.println(userService.getUser(user));
-        System.out.println(userService.getUser(user));
-        System.out.println(userService.getUser(user));
-        System.out.println(userService.getUser(user));
-        System.out.println(userService.getUser(user));
-        System.out.println(userService.getUser(user));
-        System.out.println(userService.getUser(user));
-        System.out.println(userService.getUser(user));
-        System.out.println(userService.getUser(user));
-        System.out.println(userService.getUser(user));
-        System.out.println(userService.getUser(user));
-        System.out.println(userService.getUser(user));
-        System.out.println(userService.getUser(user));
-        System.out.println(userService.getUser(user));
+//        user.setName("李四");
+//        System.out.println(userService.getUser(user));
+//        user.setName("王五");
+//        System.out.println(userService.getUser(user));
         System.exit(0);
     }
 }

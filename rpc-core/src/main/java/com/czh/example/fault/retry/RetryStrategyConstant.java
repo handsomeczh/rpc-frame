@@ -18,5 +18,4 @@ public interface RetryStrategyConstant {
      */
     String FIXED_INTERVAL = "fixedInterval";
 
-    // todo 可扩展其他重试策略
 }

@@ -16,13 +16,10 @@ public class NoRetryStrategy implements RetryStrategy{
 
     /**
      * 重试策略
-     *
-     * @param callable
-     * @return
-     * @throws Exception
      */
     @Override
     public RpcResponse doRetry(Callable<RpcResponse> callable) throws Exception {
+        log.info("不重试策略，需要手动重新调用！！！");
         return callable.call();
     }
 }

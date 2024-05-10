@@ -17,10 +17,6 @@ import java.util.concurrent.TimeUnit;
 public class FixedIntervalRetryStrategy implements RetryStrategy{
     /**
      * 重试策略
-     *
-     * @param callable
-     * @return
-     * @throws Exception
      */
     @Override
     public RpcResponse doRetry(Callable<RpcResponse> callable) throws Exception {

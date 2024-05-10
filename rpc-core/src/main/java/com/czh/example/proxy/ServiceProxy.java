@@ -10,7 +10,9 @@ import com.czh.example.application.RpcApplication;
 import com.czh.example.config.RpcConfig;
 import com.czh.example.constant.RpcConstant;
 import com.czh.example.factory.RegistryFactory;
+import com.czh.example.factory.RetryStrategyFactory;
 import com.czh.example.factory.SerializerFactory;
+import com.czh.example.fault.retry.RetryStrategy;
 import com.czh.example.loadbalancer.LoadbalancerFactory;
 import com.czh.example.model.RpcRequest;
 import com.czh.example.model.RpcResponse;
@@ -77,8 +79,11 @@ public class ServiceProxy implements InvocationHandler {
             ServiceMetaInfo selectedServiceMetaInfo = LoadbalancerFactory.getInstance(rpcConfig.getLoadBalancer()).select(requestParams,serviceMetaInfoList);
             System.out.println("服务提供者信息"+ JSONUtil.toJsonStr(selectedServiceMetaInfo));
 
-            //发送tcp请求
-            RpcResponse rpcResponse = VertxTcpClient.doRequest(rpcRequest, selectedServiceMetaInfo);
+            //使用重试机制，发送tcp请求
+            RetryStrategy retryStrategy = RetryStrategyFactory.getInstance(rpcConfig.getRetryStrategy());
+            RpcResponse rpcResponse = retryStrategy.doRetry(() ->
+                VertxTcpClient.doRequest(rpcRequest, selectedServiceMetaInfo)
+            );
             return rpcResponse.getData();
         } catch (Exception e) {
             e.printStackTrace();
